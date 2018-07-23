@@ -7,5 +7,9 @@
 </ion-header>
 
 <ion-content padding>
-
+  <button ion-button (click)="DirectoryListClick()">List Directory Content </button>
+  
+  <ion-list>
+    <ion-item *ngFor="let localfile of currentDirectoryFiles">{{localfile}}</ion-item>     
+  </ion-list>
 </ion-content>

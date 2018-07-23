@@ -5,14 +5,32 @@
 </ion-header>
 
 <ion-content padding>
-  <h2>Welcome to Ionic!</h2>
+  <!-- <h2>Welcome to Ionic!</h2>
   <button ion-button (click)="presentActionSheet()">Actions</button>
 
-  <button ion-button (click)="FTPDownloadClick()">FTP Download</button>
-
   
-  <button ion-button (click)="Downloadfileclick()">Download PDF file</button>
-
   <button ion-button (click)="DirectoryListClick()">List Directory Content </button>
   <button ion-button (click)="CreateFileClick()">Create File </button>
+
+  <button ion-button (click)="UploadFileClick()">Upload File </button>
+  <button ion-button (click)="UploadFileClick2()">Upload File Demo</button>
+  <button ion-button (click)="TestGetStatus()">Test Get Status </button>
+  <button ion-button (click)="multipartformdataTest()">MultiPart-FormData</button>
+
+  <button ion-button (click)="UploadFileClickFileTransfer()">Upload File using FileTransfer </button>
+   -->
+  <ion-item>
+    <ion-label color="primary" floating>Site Name</ion-label>
+    <ion-input [(ngModel)]="SiteName"></ion-input>
+  </ion-item>    
+  <button ion-button (click)="TestGetStatus()">Status</button>
+  <button ion-button (click)="FTPDownloadClick()">FTP Download</button>
+  <button ion-button (click)="Downloadfileclick()">Download PDF file</button>
+  
+  <button ion-button (click)="multipartformdataFileTransfer()">Multipart- FileTransfer IOT</button>
+
+
+  <button ion-button (click)="multipartformdataFileTransferpritesh03()">Multipart- FileTransfer Pri </button>
+
+
 </ion-content>

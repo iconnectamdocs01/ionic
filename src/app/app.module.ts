@@ -15,6 +15,8 @@ import { FTP } from '@ionic-native/ftp';
 import { File } from '@ionic-native/file';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer';
 
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -25,6 +27,7 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
