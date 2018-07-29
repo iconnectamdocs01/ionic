@@ -1,0 +1,49 @@
+<!--
+  Generated template for the SettingsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>settings</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list>
+
+    <ion-item>
+      <ion-label color="primary" stacked>FTP HOST IP/NAME</ion-label>
+      <ion-input placeholder="Please Enter FTP HOST" [(ngModel)]="FTPHost"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>FTP UserID</ion-label>
+      <ion-input placeholder="Please Enter User Name" [(ngModel)]="FTPUserName"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>FTP Password</ion-label>
+      <ion-input placeholder="Please Enter Password" [(ngModel)]="FTP_Pwd"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>FTP Directory</ion-label>
+      <ion-input placeholder="Please Enter Location" [(ngModel)]="FTP_directory"></ion-input>
+    </ion-item>
+
+
+    <ion-item>
+      <ion-label color="primary" stacked>Device IP</ion-label>
+      <ion-input placeholder="Please Enter Device IP" [(ngModel)]="deviceIP"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary" stacked>Device API URL</ion-label>
+      <ion-input placeholder="Please Enter Device IP" [(ngModel)]="DeviceAPI_URL"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button (click)="SaveSettings()">Save Settings</button>
+  <button ion-button (click)="ClearDownload()">Clear Downloaded Files</button>
+</ion-content>

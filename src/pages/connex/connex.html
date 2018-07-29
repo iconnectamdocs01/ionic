@@ -1,0 +1,53 @@
+ 
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Connex</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    
+    <ion-fab small top right>
+        <button ion-fab color="primary" (click)="startOverclicked()">
+            <ion-icon name="git-pull-request"></ion-icon>
+        </button>
+    </ion-fab>
+    <!-- {{ip}} -->
+    <ion-stepper #stepper (selectIndexChange)="selectChange($event)">
+        <ion-step [label]="step1Lable" [description]="step1Description"
+        [icon]="Step1Icon">            
+            <ion-item>
+                <ion-label color="primary" floating>Enter File Name</ion-label>
+                <ion-input [(ngModel)]="name"></ion-input>
+            </ion-item>
+            <button ion-button small  (click)="FTPDownloadClick()">Download</button>
+            <button ion-button small ionicStepperNext>Next</button>
+        </ion-step>
+        <ion-step label="Connect Device" [description]="step2Description"
+        [icon]="Step2Icon">
+            <h2> Select </h2>
+            <p>i001</p>
+            <button ion-button small ionicStepperNext>Next</button>
+            <button ion-button color="light" small ionicStepperPrevious>Previous</button>
+        </ion-step>
+        <ion-step label="Step Label 3" description="Step 3">
+            <h2> Select</h2>
+            <p>i001</p>
+            <div *ngIf="isProcessStarted">
+                <ion-spinner name="dots"></ion-spinner>
+            </div>
+                       
+            <button ion-button small  (click)="processClicked()">Process</button>
+            <button ion-button small ionicStepperNext>Next</button>
+            <button ion-button color="light" small ionicStepperPrevious>Previous</button>
+        </ion-step>
+        <ion-step label="Step2 - Step2 - Step2" description="Step1 description">
+            <h2>Step2 Content</h2>
+            <p>Step2 Content</p>
+            <button ion-button color="light" small ionicStepperPrevious>Previous</button>
+        </ion-step>
+    </ion-stepper>
+</ion-content>

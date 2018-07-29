@@ -4,7 +4,6 @@ import { NavController } from 'ionic-angular';
 import { ActionSheetController } from 'ionic-angular';
 
 import { FTP } from '@ionic-native/ftp';
-
 import { AlertController } from 'ionic-angular';
 import { Platform } from 'ionic-angular';
 import { File } from '@ionic-native/file';

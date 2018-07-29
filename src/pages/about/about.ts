@@ -17,6 +17,8 @@ export class AboutPage {
 
   }
   DirectoryListClick(){
+
+    this.currentDirectoryFiles=  new Array()
     this.file.listDir( this.file.dataDirectory,'').then(result => {
       for( let f of result)
       {
