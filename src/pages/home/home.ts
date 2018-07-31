@@ -405,6 +405,9 @@ export class HomePage {
       .catch(
         error => this.showAlert(error + "Error in Catch")
       )
+
+
+      
   }//End Method
 
   multipartformdataFileTransferpritesh03() {

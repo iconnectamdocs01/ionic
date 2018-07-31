@@ -1,15 +1,14 @@
- 
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>Connex</ion-title>
-  </ion-navbar>
+    <ion-navbar>
+        <ion-title>Connex</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-    
+
     <ion-fab small top right>
         <button ion-fab color="primary" (click)="startOverclicked()">
             <ion-icon name="git-pull-request"></ion-icon>
@@ -17,37 +16,116 @@
     </ion-fab>
     <!-- {{ip}} -->
     <ion-stepper #stepper (selectIndexChange)="selectChange($event)">
-        <ion-step [label]="step1Lable" [description]="step1Description"
-        [icon]="Step1Icon">            
-            <ion-item>
+        <ion-step [label]="step1Lable" [description]="step1Description" [icon]="Step1Icon">
+            <ion-item style="padding-left: 0px">
                 <ion-label color="primary" floating>Enter File Name</ion-label>
                 <ion-input [(ngModel)]="name"></ion-input>
             </ion-item>
-            <button ion-button small  (click)="FTPDownloadClick()">Download</button>
-            <button ion-button small ionicStepperNext>Next</button>
+            <button ion-button icon-start small (click)="FTPDownloadClick()">
+                <ion-icon name="ios-cloud-download-outline"></ion-icon>
+                Download
+            </button>
+            <!-- <button ion-button small (click)="FTPDownloadClick()">
+                Download
+            </button> -->
+            <button ion-button icon-only ionicStepperNext small>
+                <ion-icon name="arrow-round-down"></ion-icon>
+            </button>
+
+            <!-- <button ion-button small ionicStepperNext color="light">Next</button> -->
         </ion-step>
-        <ion-step label="Connect Device" [description]="step2Description"
-        [icon]="Step2Icon">
-            <h2> Select </h2>
-            <p>i001</p>
-            <button ion-button small ionicStepperNext>Next</button>
-            <button ion-button color="light" small ionicStepperPrevious>Previous</button>
+        <ion-step label="Connect Device" [description]="step2Description" [icon]="Step2Icon">
+
+
+            <!--  -->
+            <div style="display: flex;">
+                <div style="width: 90%;vertical-align: middle; padding: 15px 0px 0px 0px">
+                    <!-- <h6 style="vertical-align: middle;">  </h6> -->
+                    Turn the Device On.
+                </div>
+                <div style="width: 10%;text-align: right; vertical-align: middle;">
+                    <button ion-button icon-only small (click)="ScanDevices()">
+                        <ion-icon name="refresh"></ion-icon>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- style="width: 70%;min-width: 50px;" -->
+            <ion-item style="display: flex;padding-left: 0px">
+                <ion-label style="max-width: 30%;">Device</ion-label>
+                <ion-select style="min-width: 70%;" [(ngModel)]="device" okText="Okay" cancelText="Dismiss" [compareWith]="compareFn">
+                    <ion-option *ngFor="let o of deviceList" [value]="o">{{o.text}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <button ion-button small icon-start (click)="ConnectDeviceClick()">
+                <ion-icon name="md-link"></ion-icon>
+                Connect
+            </button>
+            <!-- <button ion-button small (click)="ConnectDeviceClick()">Connect Device</button> -->
+            <button ion-button icon-only small ionicStepperNext>
+                <ion-icon name="arrow-round-down"></ion-icon>
+            </button>
+            <button ion-button icon-only small ionicStepperPrevious>
+                <ion-icon name="arrow-round-up"></ion-icon>
+            </button>
+            <!-- <button ion-button small ionicStepperNext>Next</button> -->
+            <!-- <button ion-button color="light" small ionicStepperPrevious>Previous</button>  -->
         </ion-step>
-        <ion-step label="Step Label 3" description="Step 3">
-            <h2> Select</h2>
-            <p>i001</p>
+        <ion-step label="Send File to Device" [description]="step3Description" [icon]="Step3Icon">
+
+            <ion-item style="display: flex;padding-left: 0px">
+                <ion-select style="min-width: 100%;" [(ngModel)]="localfilename" okText="Okay" cancelText="Dismiss" [compareWith]="compareFn">
+                    <ion-option *ngFor="let f of localFilelist" [value]="f">{{f.text}}</ion-option>
+                </ion-select>
+            </ion-item>
+
             <div *ngIf="isProcessStarted">
                 <ion-spinner name="dots"></ion-spinner>
             </div>
-                       
-            <button ion-button small  (click)="processClicked()">Process</button>
-            <button ion-button small ionicStepperNext>Next</button>
-            <button ion-button color="light" small ionicStepperPrevious>Previous</button>
+            <button ion-button small icon-start small (click)="SendFilesClicked()">
+                <ion-icon name="send"></ion-icon>
+                Send
+            </button>
+            <button ion-button small icon-only ionicStepperPrevious>
+                <ion-icon name="arrow-round-up"></ion-icon>
+            </button>
+            <!-- <button ion-button small (click)="processClicked()">Process</button> -->
+            <!-- <button ion-button small ionicStepperNext>Next</button> -->
+            <!-- <button ion-button color="light" small ionicStepperPrevious>Previous</button> -->
         </ion-step>
-        <ion-step label="Step2 - Step2 - Step2" description="Step1 description">
-            <h2>Step2 Content</h2>
-            <p>Step2 Content</p>
-            <button ion-button color="light" small ionicStepperPrevious>Previous</button>
+
+        <ion-step label="Install" [description]="step4Description" [icon]="Step4Icon">
+            <button ion-button small icon-start small (click)="InstallClicked()">
+                <ion-icon name="infinite"></ion-icon>
+                Install
+            </button>
+            <button ion-button small icon-only ionicStepperPrevious (click)="goToPreviousFromInstallClicked()">
+                <ion-icon name="arrow-round-up"></ion-icon>
+            </button>
         </ion-step>
     </ion-stepper>
 </ion-content>
+<!-- color="secondary" -->
+<ion-footer>
+    <ion-toolbar>
+        <ion-title>
+            {{ticks}}
+            <ion-icon name="ios-phone-portrait"></ion-icon>
+
+            <ion-spinner  name="dots"></ion-spinner>
+            <ion-spinner  name="dots"></ion-spinner>
+            <!-- <ion-icon *ngIf="!isProcessStarted" name="ios-more-outline"></ion-icon>
+            <ion-icon *ngIf="!isProcessStarted" name="ios-more-outline"></ion-icon> -->
+
+            <!-- *ngIf="isProcessStarted" -->
+            <ion-icon  name="ios-cube-outline"></ion-icon>
+            {{devicename}}
+
+            <!-- <div >
+                <ion-spinner name="dots"></ion-spinner>
+            </div> -->
+        </ion-title>
+    </ion-toolbar>
+</ion-footer>

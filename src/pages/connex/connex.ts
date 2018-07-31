@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavController, NavParams, LoadingController, ItemSliding } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, ItemSliding, Alert } from 'ionic-angular';
 import {
   IonicStepComponent,
   IonicStepperModule,
@@ -20,7 +20,10 @@ import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-nati
 import { HttpHeaders, HttpResponse, HttpRequest, HttpErrorResponse } from '@angular/common/http';
 import 'rxjs/add/operator/map'
 
+import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
+import { Network } from '@ionic-native/network';
 
+import {Observable} from 'rxjs/Rx';
 
 @Component({
   selector: 'page-connex',
@@ -43,8 +46,23 @@ export class ConnexPage {
 
   step3Description: string = "";
   Step3Icon: string = "number";
+
+  step4Description: string = "";
+  Step4Icon: string = "number";
+
   ip: string = "00.00.00.00"
 
+  fileTransfer: FileTransferObject = this.transfer.create();
+  deviceList: any[];
+  device: any;
+  devicename: string;
+
+
+  localFilelist: any[];
+  localfilename: any;
+  
+
+  ticks =0;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -56,7 +74,9 @@ export class ConnexPage {
     private platform: Platform,
     private file: File,
     private transfer: FileTransfer,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    private hotspot: Hotspot,
+    private network: Network
 
   ) {
 
@@ -75,16 +95,71 @@ export class ConnexPage {
       this.step1Description = msg
     });
 
+    let disconnectSubscription = this.network.onDisconnect().subscribe(() => {
+      //console.log('network was disconnected :-(');
+      //alert("SUB:Network Disconnected")
+      this.connexsrv.ConnexAppConfig.isWifiConnected = false;
+      this.connexsrv.publishAppconfigChange();
+      this.connexsrv.ConnexAppConfig.WifiName = ""
+      this.devicename=""
+      
+    });
+
+    let connectSubscription = this.network.onConnect().subscribe(() => {
+      // console.log('network connected!');
+      // We just got a connection but we need to wait briefly
+      // before we determine the connection type. Might need to wait.
+      // prior to doing any api requests as well.
+      setTimeout(() => {
+        if (this.network.type === 'wifi') {
+          // alert('we got a wifi connection, woohoo!');
+          this.connexsrv.ConnexAppConfig.isWifiConnected = true;
+          this.hotspot.getConnectionInfo()
+            .then( (connectioninfo) => {
+                this.connexsrv.ConnexAppConfig.WifiName = connectioninfo.SSID
+                this.connexsrv.publishAppconfigChange();
+                //alert("SUB:Network Connected")
+                // //WHEN NOT NETWORK available and it connects to
+                // if (connectioninfo.SSID.includes("Connectify")) {
+                //   this.devicename= connectioninfo.SSID
+                // }
+                
+            })
+            .catch(( reason )=> {
+                alert(reason)
+            })
+        }
+      }, 3000);
+    });
+
+  //   this.deviceList = [
+  //     { text: 'Device1', value: 'Device1' },
+  //     { text: 'Device2', value: 'Device2' },
+  //     { text: 'Device3', value: 'Device3' }
+  // ];
+  
+
+  // this.device = { text: 'Device1', value: 'Device1' };
+
+  let timer = Observable.timer(2000,1000);
+  timer.subscribe(t=>{
+    this.ticks = t
+    alert(this.ticks)
+  });
 
   }
 
-
+  compareFn(option1: any, option2: any) {
+      return option1.value === option2.value;
+  }
+  
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ConnexPage');
 
   }
 
+ 
   presentLoadingDots() {
     let loading = this.loadingCtrl.create({
       spinner: 'dots',
@@ -105,6 +180,20 @@ export class ConnexPage {
     //   loading.dismiss();
 
     // }, 9000);
+  }
+  presentProcessDots() {
+    let loading = this.loadingCtrl.create({
+      spinner: 'dots',
+      content: 'Processing',
+
+    });
+
+    loading.present();
+
+    setTimeout(() => {
+       loading.dismiss();
+    }, 500);
+    
   }
 
   localFileExist(): boolean {
@@ -131,24 +220,53 @@ export class ConnexPage {
       // this.Step2Icon="warning"
      // this.Step2Icon = "alert"
     }
+    if (e===2) {
+      this.listDirectoryfiles()
+    }
     //this.ip = this.connexsrv.ConnexAppConfig.UPLOAD_API_IP
   }
 
   startOverclicked() {
     this.stepper.setStep(0);
+    this.name=""
     this.Step1Icon = "number"
     this.Step2Icon = "number"
     this.Step3Icon = "number"
+    this.Step4Icon = "number"
 
     this.step1Description = ""
     this.step2Description = ""
     this.step3Description = ""
+    this.step4Description = ""
+
+    this.hotspot.getConnectionInfo()
+            .then( (connectioninfo) => {
+                // this.connexsrv.ConnexAppConfig.WifiName = connectioninfo.SSID
+                // this.connexsrv.publishAppconfigChange();
+
+                if (connectioninfo.SSID.includes("Connectify")  ) {
+      
+                  this.hotspot.removeWifiNetwork(connectioninfo.SSID).then( ()=> {
+                    this.showAlert("Removed connection to Device "+ connectioninfo.SSID)
+                    this.devicename=""
+                    this.connexsrv.ConnexAppConfig.WifiName = ""
+                    this.connexsrv.publishAppconfigChange();
+                  }).catch((reason) => this.showAlert("Error in removing device connection:"+reason))
+                                    
+                }
+
+            })
+            .catch(( reason )=> {
+                alert(reason)
+            })
+    
+     this.isProcessStarted = false;
+    //this.isProcessStarted = !this.isProcessStarted;
+
 
   }
-  processClicked() {
-    this.isProcessStarted = !this.isProcessStarted;
-  }
 
+ //STEP 1
   FTPDownloadClick() {
     console.log('FTP Download clicked');
 
@@ -170,11 +288,13 @@ export class ConnexPage {
                 file.subscribe({
                   next: event => {
 
-                    this.showAlert(this.name + ".zip " +" Found.")
+                    this.presentProcessDots()
+                    // this.showAlert(this.name + ".zip " +" Found.")
                     
                     this.Step1Icon = "checkmark"
                     this.step1Description = this.name + " Downloaded Successfully.."
-                    this.stepper.setStep(2);
+                    // this.stepper.setStep(1);
+                    this.stepper.nextStep();
                     //this.connexsrv.publishfileDownloadMessage( this.name+".zip" +" Sucessfully downloaded")
 
                   },
@@ -226,5 +346,205 @@ export class ConnexPage {
     });
     alert.present();
   }
+
+  //STEP 2
+
+  ScanDevices()
+  {
+    // alert("Scan Device clicked")
+    this.hotspot.scanWifi().then( ( alldevices: HotspotNetwork[]) =>{
+      this.deviceList= []
+      
+
+      alldevices.forEach( (item) =>{
+        
+        if (item.SSID.includes("Connectify")) {
+          this.deviceList.push({ text: item.SSID, value: item.SSID } )
+          
+        }
+      })
+
+      if (this.deviceList.length>0) {
+        this.device = this.deviceList[0]
+        this.devicename = this.device.text
+        
+      }
+    }).catch( (reson) =>
+  {
+    this.showAlert("Error while scanning devices")
+  })
+  }
+
+  ConnectDeviceClick()
+  {
+    // this.hotspot.connectToWifi("Connectify-me","12345678").then( ()=>{
+    this.hotspot.connectToWifi(this.device.text,"12345678").then( ()=>{
+      
+      this.connexsrv.ConnexAppConfig.WifiName = this.device.text
+      this.connexsrv.publishAppconfigChange();
+
+      this.devicename = this.device.text
+      this.Step2Icon = "checkmark"
+      this.step2Description = this.device.text + " Connected Successfully.."
+      // this.stepper.setStep(2)
+      this.stepper.nextStep()
+      this.presentProcessDots()
+
+
+
+      /*
+      http://192.168.137.1/iconnectwebapi/UploadScriptFile
+      
+      let options: FileUploadOptions = {
+        fileKey: 'ionicfile',
+        fileName: this.name +'.zip',
+        chunkedMode: false,
+        mimeType: 'multipart/form-data',
+        // params: { 'fileName':  'file.pdf' },
+        httpMethod: 'POST'
+      }
+
+      File Send Code
+      
+      if (this.name.length>0) {
+        this.fileTransfer.upload(this.file.dataDirectory + this.name +'.zip',
+        // THIS PRITESHP03 - FIOS8W
+        // 'http://192.168.1.151/iconnectwebapidemo/uploadscriptfile'
+        'http://192.168.137.1/iconnectwebapi/uploadscriptfile'
+        , options)
+        .then((data) => {
+          this.showAlert(data + "Sucess")
+        },
+          (err) => {   this.showAlert(err+" Error in THEN" )}
+        )
+        .catch(
+          error => this.showAlert(error + "Error in Catch")
+        )
+      }
+      */
+
+
+
+
+    })
+    .catch( ()=> {
+      this.showAlert("Device Not Connected")
+      this.Step2Icon = "alert"
+      this.step2Description = this.device.text + " Not Connected.."
+      
+    })
+  }
+
+  //STEP 3
+  listDirectoryfiles(){
+    
+    this.localFilelist =  []
+    let hasCurrrentfile  = false
+    this.file.listDir( this.file.dataDirectory,'').then(result => {
+      for( let f of result)
+      {
+
+        if (f.name.includes(".zip")) {
+          this.localFilelist.push({ text: f.name, value: f.name })          
+        }
+        if (f.name.includes(this.name)) {
+          hasCurrrentfile = true;
+          //alert("Has Current file")
+        }        
+        
+      }
+
+      if (hasCurrrentfile &&  this.localFilelist.length > 0) {
+        this.localfilename={ text: this.name+".zip", value: this.name+".zip" }
+        //this.localfilename = this.localFilelist[0]
+        //alert("Setting First Element") 
+      }
+
+  }) //end  list DIR
+
+  // if (hasCurrrentfile) {
+  //   this.localfilename = this.localFilelist[0]
+  //   //this.localfilename={ text: this.name+".zip", value: this.name+".zip" }
+  //   //alert("Has Current file.....")
+  // }
+
+  //this.presentProcessDots()
+
+  }
+
+
+  SendFilesClicked() {
+    this.isProcessStarted = true
+
+    let options: FileUploadOptions = {
+      fileKey: 'ionicfile',
+      fileName: this.name +'.zip',
+      chunkedMode: false,
+      mimeType: 'multipart/form-data',
+      // params: { 'fileName':  'file.pdf' },
+      httpMethod: 'POST'
+    }
+
+    
+    if (this.name.length>0) {
+      // this.fileTransfer.upload(this.file.dataDirectory + this.name +'.zip',      
+      this.fileTransfer.upload(this.file.dataDirectory + this.localfilename.text,      
+      'http://192.168.137.1/iconnectwebapi/uploadscriptfile'
+      , options)
+      .then((data) => {
+        //this.showAlert(data + "Sucess")
+        this.Step3Icon = "checkmark"
+        this.step3Description = this.localfilename.text + " Sent Successfully.."
+        // this.stepper.setStep(2)
+        this.stepper.nextStep()
+        this.presentProcessDots()
+
+        //FLIPPING PROGRESS STATUS
+        this.isProcessStarted = false
+        this.Step4Icon = "number"
+        this.step4Description = ""
+
+      },
+        (err) => {   
+          this.showAlert(err+" Error in THEN" )
+          this.Step3Icon = "alert"
+          this.step3Description = this.localfilename.text + " Send Error.."
+          this.isProcessStarted =  false
+          //!this.isProcessStarted;
+        }
+      )
+      .catch(
+        error => {
+          this.showAlert(error + "Error in Catch")
+          this.Step3Icon = "alert"
+          this.step3Description = this.localfilename.text + " Send Error.."
+
+          this.isProcessStarted = false
+        }
+        
+      )
+    }
+  }
+  
+
+  // Step 4
+  InstallClicked()
+  {
+    this.stepper.nextStep()
+    this.presentProcessDots()
+    this.Step4Icon = "done-all"
+    this.step4Description = " Installed Successfully.."
+    
+   
+    //this.showAlert("Installation complete")
+    
+
+  }
+  goToPreviousFromInstallClicked()
+  {
+    this.Step4Icon = "number"
+    this.step4Description = ""
+  }
+
 
 }

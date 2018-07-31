@@ -5,9 +5,13 @@ export class AppConfig {
     public FTP_Pwd: string ="Tek@1234";
     public FTP_Directory: string ="/ionic/"
 
-    public UPLOAD_API_URL: string ="http://192.168.1.151/iconnectwebapidemo/GetStatus";
+    public UPLOAD_API_URL: string ="http://192.168.137.1/iconnectwebapi/UploadScriptFile";
     // public UPLOAD_API_URL: string ="http://192.168.1.151/iconnectwebapidemo/GetStatus";
     public UPLOAD_IP : string = "190.1.1.1"
+
+    public isWifiConnected: boolean = false;
+    public WifiName: string = "";
+    
     // private _upload_ip: string = "10.10.10.10";
     // get UPLOAD_API_IP():string {
     //     return this._upload_ip;

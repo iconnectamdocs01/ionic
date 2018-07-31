@@ -26,6 +26,9 @@ import { ConnexServiceProvider } from '../providers/connex-service/connex-servic
 
 import { IonicStepperModule } from 'ionic-stepper';
 
+import { Hotspot} from '@ionic-native/hotspot';
+import { Network } from '@ionic-native/network';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -43,6 +46,7 @@ import { IonicStepperModule } from 'ionic-stepper';
     BrowserAnimationsModule,
     HttpClientModule,
     IonicStepperModule,
+    
     IonicModule.forRoot(MyApp)
   ],
   bootstrap: [IonicApp],
@@ -66,7 +70,8 @@ import { IonicStepperModule } from 'ionic-stepper';
     FileTransfer, FileTransferObject,
     ConnexServiceProvider,
     ConnexServiceProvider,
-    
+    Hotspot,
+    Network
   ]
 })
 export class AppModule {}

@@ -44,6 +44,13 @@
       <ion-input placeholder="Please Enter Device IP" [(ngModel)]="DeviceAPI_URL"></ion-input>
     </ion-item>
   </ion-list>
-  <button ion-button (click)="SaveSettings()">Save Settings</button>
-  <button ion-button (click)="ClearDownload()">Clear Downloaded Files</button>
+  <button ion-button small icon-start (click)="SaveSettings()">
+      <ion-icon name="hammer"></ion-icon>
+      Save Settings
+  </button>
+  <button ion-button icon-only small (click)="ClearDownload()">
+      <ion-icon name="close-circle"></ion-icon>
+  </button>
+  <!-- <button ion-button (click)="SaveSettings()">Save Settings</button> -->
+  <!-- <button ion-button (click)="ClearDownload()">Clear Downloaded Files</button> -->
 </ion-content>

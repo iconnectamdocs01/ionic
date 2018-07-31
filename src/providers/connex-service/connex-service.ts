@@ -55,6 +55,7 @@ export class ConnexServiceProvider {
     this.events.publish('fileDownload:publish', msg)
   }
   
+  /*
   FTPDownloadClick(filename:string): string {
   
     console.log('FTP Download clicked');
@@ -98,6 +99,8 @@ export class ConnexServiceProvider {
 
       return this.msg
   }
+  */
+
 
   /**
    * GetAppConfig
