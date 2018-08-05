@@ -7,12 +7,106 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>devicelog</ion-title>
+    <ion-title>Log</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+ 
+    <ion-fab small bottom right>
+      <!-- (click)="startOverclicked()" -->
+        <button ion-fab color="primary" >
+            <ion-icon name="trash"></ion-icon>
+        </button>
+    </ion-fab>
+  <!-- <ion-list no-margin>
+    <ion-list-header>
+      Enter Parameters to Pass to the Next Page
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Parameters</ion-label>
+      <ion-select [(ngModel)]="myParam" multiple="true">
+        <ion-option value="Bangkok">Bangkok</ion-option>
+        <ion-option value="Nonthaburi">Nonthaburi</ion-option>
+        <ion-option value="Nakhon Ratchasima">Nakhon Ratchasima</ion-option>
+        <ion-option value="Chiang Mai">Chiang Mai</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
 
+  <div padding>
+    <button ion-button color="secondary" block (click)="pushParams()">Navigate with Parameters</button>
+  </div> -->
+
+  
+  <ion-list class="chat-sliding-demo">
+      <!-- <ion-list-header>
+        Chats
+      </ion-list-header>
+   -->
+      <ion-item-sliding *ngFor="let chat of chats" #item >
+        <ion-item (click)="itemSelected(chat)">
+          <!-- <ion-avatar item-start>
+            <img [src]="chat.img"> 
+          </ion-avatar>-->
+          <ion-icon item-start name="{{chat.img}}"></ion-icon>
+          <h2>{{chat.name}}</h2>
+          <p>{{chat.message}}</p>
+          <ion-note item-end>
+            {{chat.time}}
+          </ion-note>
+        </ion-item>
+  
+        <ion-item-options>
+          <button ion-button color="secondary" (click)="viewLogDetail(chat)">
+            <ion-icon name="menu"></ion-icon>
+            More
+          </button>
+          <button ion-button color="dark" (click)="mute(item)">
+            <ion-icon name="volume-off"></ion-icon>
+            Mute
+          </button>
+          <button ion-button color="danger" (click)="delete(item)">
+            <ion-icon name="trash"></ion-icon>
+            Delete
+          </button>
+        </ion-item-options>
+  
+        <ion-item-options side="left" (ionSwipe)="archive(item)">
+          <button ion-button color="primary" expandable (click)="archive(item)">
+            <ion-icon name="archive" class="expand-hide"></ion-icon>
+            <div class="expand-hide">Archive</div>
+            <ion-spinner id="archive-spinner"></ion-spinner>
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>      
+  </ion-list>
+  
+  <!-- <ion-list>
+      <button ion-item *ngFor="let chat of chats" (click)="itemSelected(chat)">
+        
+        <h2>{{ chat.name }}</h2>
+        <p>{{ chat.message }}</p>
+      </button>  
+    </ion-list> -->
+
+  
 </ion-content>
+
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-title>
+           
+            <ion-icon name="ios-phone-portrait"></ion-icon>
+
+            <ion-spinner  name="dots"></ion-spinner>
+            <ion-spinner  name="dots"></ion-spinner>
+           
+            <ion-icon  name="ios-cube-outline"></ion-icon>
+          
+        </ion-title>
+    </ion-toolbar>
+</ion-footer>

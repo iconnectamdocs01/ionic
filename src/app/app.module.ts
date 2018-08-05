@@ -10,6 +10,7 @@ import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ConnexPage } from "../pages/connex/connex";
 import { DevicelogPage } from "../pages/devicelog/devicelog";
+import { DevicelogdetailPage } from "../pages/devicelogdetail/devicelogdetail";
 import { StatusPage } from "../pages/status/status";
 import { SettingsPage } from "../pages/settings/settings";
 
@@ -38,6 +39,7 @@ import { Network } from '@ionic-native/network';
     TabsPage,
     ConnexPage,
     DevicelogPage,
+    DevicelogdetailPage,
     StatusPage,
     SettingsPage
   ],
@@ -58,6 +60,7 @@ import { Network } from '@ionic-native/network';
     TabsPage,
     ConnexPage,
     DevicelogPage,
+    DevicelogdetailPage,
     StatusPage,
     SettingsPage
   ],

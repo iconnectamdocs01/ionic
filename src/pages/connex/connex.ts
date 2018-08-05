@@ -144,7 +144,7 @@ export class ConnexPage {
   let timer = Observable.timer(2000,1000);
   timer.subscribe(t=>{
     this.ticks = t
-    alert(this.ticks)
+    //alert(this.ticks)
   });
 
   }
