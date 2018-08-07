@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Log Detail: {{myParam}}</ion-title>
+    <ion-title>Log Detail: {{logfilename}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,13 +15,25 @@
 
 <ion-content >
    <!-- <h5> {{myParam}}</h5> -->
+  <ion-fab small bottom right>     
+        <button ion-fab color="primary" (click)="sendEmail()">
+            <ion-icon name="mail"></ion-icon>
+        </button>
+  </ion-fab>
+
+  
    <ion-list>
-      <ion-item text-wrap>              
+      <ion-item text-wrap *ngFor="let line of logfilelines">              
+          <p>{{line}}</p>
+      </ion-item>
+
+   
+      <!-- <ion-item text-wrap>              
         <p>I've had a pretty messed up day. If we just..I've had a pretty messed up day. If we just...</p>
       </ion-item>
       <ion-item text-wrap>              
           <p>I've had a pretty messed up day. If we just..I've had a pretty messed up day. If we just...</p>
-        </ion-item>
+        </ion-item> -->
     </ion-list>
     <!-- <div>
         <h5>Parameters passed:</h5>

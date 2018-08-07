@@ -89,4 +89,5 @@
     <plugin name="cordova-plugin-network-information" spec="^2.0.1" />
     <plugin name="cordova-plugin-networkinterface" spec="^2.0.0" />
     <allow-navigation href="http://192.168.1.205:8100" />
+    <plugin name="cordova-plugin-email-composer" spec="^0.8.15" />
 </widget>

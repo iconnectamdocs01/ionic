@@ -7,20 +7,42 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Log</ion-title>
+    <ion-title>Logs
+        
+    </ion-title>
+    <!-- <button ion-button icon-only small top right>
+        <ion-icon name="refresh"></ion-icon>
+    </button> -->
+    
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
- 
-    <ion-fab small bottom right>
-      <!-- (click)="startOverclicked()" -->
+ <!-- (click)="startOverclicked()" -->
+    <!-- <ion-fab small bottom right>
+      
         <button ion-fab color="primary" >
-            <ion-icon name="trash"></ion-icon>
+             <ion-icon name="trash"></ion-icon>
         </button>
-    </ion-fab>
+    </ion-fab> -->
+
+    <ion-fab bottom right >
+        <button ion-fab>
+          <ion-icon name="ios-arrow-dropleft-circle"></ion-icon>
+        </button>
+        
+        <ion-fab-list side="left">
+            <button ion-fab (click)="refeshLogClick()">
+                <ion-icon name="refresh"></ion-icon>
+              </button>
+              <button ion-fab>
+                  <ion-icon name="trash" (click)="deleteAllLogClick()"></ion-icon>
+                </button>
+          
+        </ion-fab-list>
+      </ion-fab>
   <!-- <ion-list no-margin>
     <ion-list-header>
       Enter Parameters to Pass to the Next Page
@@ -46,41 +68,41 @@
         Chats
       </ion-list-header>
    -->
-      <ion-item-sliding *ngFor="let chat of chats" #item >
-        <ion-item (click)="itemSelected(chat)">
+      <ion-item-sliding *ngFor="let logfile of logfiles" #item >
+        <ion-item (click)="itemSelected(logfile)">
           <!-- <ion-avatar item-start>
             <img [src]="chat.img"> 
           </ion-avatar>-->
-          <ion-icon item-start name="{{chat.img}}"></ion-icon>
-          <h2>{{chat.name}}</h2>
-          <p>{{chat.message}}</p>
+          <ion-icon item-start name="{{logfile.img}}"></ion-icon>
+          <h2>{{logfile.name}}</h2>
+          <p>{{logfile.message}}</p>
           <ion-note item-end>
-            {{chat.time}}
+            {{logfile.time}}
           </ion-note>
         </ion-item>
   
         <ion-item-options>
-          <button ion-button color="secondary" (click)="viewLogDetail(chat)">
-            <ion-icon name="menu"></ion-icon>
-            More
+          <button ion-button color="secondary" (click)="viewLogDetail(logfile)">
+            <ion-icon name="mail"></ion-icon>
+            E-Mail
           </button>
-          <button ion-button color="dark" (click)="mute(item)">
+          <!-- <button ion-button color="dark" (click)="mute(item)">
             <ion-icon name="volume-off"></ion-icon>
             Mute
-          </button>
-          <button ion-button color="danger" (click)="delete(item)">
+          </button> -->
+          <button ion-button color="danger" (click)="delete(logfile)">
             <ion-icon name="trash"></ion-icon>
             Delete
           </button>
         </ion-item-options>
   
-        <ion-item-options side="left" (ionSwipe)="archive(item)">
+        <!-- <ion-item-options side="left" (ionSwipe)="archive(item)">
           <button ion-button color="primary" expandable (click)="archive(item)">
             <ion-icon name="archive" class="expand-hide"></ion-icon>
             <div class="expand-hide">Archive</div>
             <ion-spinner id="archive-spinner"></ion-spinner>
           </button>
-        </ion-item-options>
+        </ion-item-options> -->
       </ion-item-sliding>      
   </ion-list>
   

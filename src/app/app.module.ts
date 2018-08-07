@@ -30,6 +30,9 @@ import { IonicStepperModule } from 'ionic-stepper';
 import { Hotspot} from '@ionic-native/hotspot';
 import { Network } from '@ionic-native/network';
 
+import { EmailComposer } from '@ionic-native/email-composer';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -74,7 +77,8 @@ import { Network } from '@ionic-native/network';
     ConnexServiceProvider,
     ConnexServiceProvider,
     Hotspot,
-    Network
+    Network,
+    EmailComposer
   ]
 })
 export class AppModule {}

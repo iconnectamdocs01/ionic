@@ -11,6 +11,8 @@ export class AppConfig {
 
     public isWifiConnected: boolean = false;
     public WifiName: string = "";
+
+    public API_URL: string ="http://192.168.1.151/iconnectwebapidemo";
     
     // private _upload_ip: string = "10.10.10.10";
     // get UPLOAD_API_IP():string {

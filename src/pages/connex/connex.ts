@@ -24,6 +24,7 @@ import { Hotspot, HotspotNetwork } from '@ionic-native/hotspot';
 import { Network } from '@ionic-native/network';
 
 import {Observable} from 'rxjs/Rx';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'page-connex',
@@ -35,6 +36,7 @@ export class ConnexPage {
 
   name: string;
   toggleSpinner: boolean = false;
+  //THIS WAS FOR Trial
   isProcessStarted: boolean = false;
 
   step1Lable: string = "Download File";
@@ -61,8 +63,9 @@ export class ConnexPage {
   localFilelist: any[];
   localfilename: any;
   
-
+  apiurl :string ;
   ticks =0;
+  isInstallStarted : boolean = false;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -76,7 +79,8 @@ export class ConnexPage {
     private transfer: FileTransfer,
     public loadingCtrl: LoadingController,
     private hotspot: Hotspot,
-    private network: Network
+    private network: Network,
+    private http:HttpClient,
 
   ) {
 
@@ -141,10 +145,24 @@ export class ConnexPage {
 
   // this.device = { text: 'Device1', value: 'Device1' };
 
-  let timer = Observable.timer(2000,1000);
+  let timer = Observable.timer(2000,5000);
   timer.subscribe(t=>{
-    this.ticks = t
+     this.ticks = t
+    // Call Status Web API to chec in progress
+    // Flip Status
     //alert(this.ticks)
+    //alert(this.apiurl+"/GetStatus")
+    this.apiurl = this.connexsrv.ConnexAppConfig.API_URL;
+    this.http.get(this.apiurl+"/GetStatus")
+    .subscribe( (data : boolean) => {
+      this.isInstallStarted = data
+      //alert(data)
+    },
+    err => { 
+      alert(err)
+     }
+    )
+
   });
 
   }

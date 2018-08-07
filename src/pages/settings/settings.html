@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content >
 
   <ion-list>
 
@@ -43,15 +43,17 @@
       <ion-label color="primary" stacked>Device API URL</ion-label>
       <ion-input placeholder="Please Enter Device IP" [(ngModel)]="DeviceAPI_URL"></ion-input>
     </ion-item>
+
+    <ion-item>
+        <button ion-button small icon-start (click)="SaveSettings()">
+            <ion-icon name="ios-cog"></ion-icon>
+            Save Settings
+        </button>
+        <button ion-button small icon-start (click)="ClearDownload()" color="light">
+            <ion-icon name="md-trash"></ion-icon>
+            Delete All Downloads
+        </button>
+    </ion-item>
   </ion-list>
-  <button ion-button small icon-start (click)="SaveSettings()">
-      <ion-icon name="ios-cog"></ion-icon>
-      Save Settings
-  </button>
-  <button ion-button icon-only small (click)="ClearDownload()">
-      <ion-icon name="ios-trash-outline"></ion-icon>
-      <!-- <img src="../../assets/imgs/filled-trash.png"> -->
-  </button>
-  <!-- <button ion-button (click)="SaveSettings()">Save Settings</button> -->
-  <!-- <button ion-button (click)="ClearDownload()">Clear Downloaded Files</button> -->
+
 </ion-content>
