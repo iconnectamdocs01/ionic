@@ -1,13 +1,14 @@
 <ion-header>
 
-    <ion-navbar>
+    <ion-navbar color="primary">
         <ion-title>Connex</ion-title>
     </ion-navbar>
 
 </ion-header>
 
-
-<ion-content padding>
+<!-- background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%); -->
+<!-- background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%); -->
+<ion-content padding style="background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);">
 
     <ion-fab small top right>
         <button ion-fab color="primary" (click)="startOverclicked()">
@@ -16,10 +17,11 @@
     </ion-fab>
     <!-- {{ip}} -->
     <ion-stepper #stepper (selectIndexChange)="selectChange($event)">
-        <ion-step [label]="step1Lable" [description]="step1Description" [icon]="Step1Icon">
+        <ion-step [label]="step1Lable" [description]="step1Description" 
+                  [icon]="Step1Icon"  >
             <ion-item style="padding-left: 0px">
                 <ion-label color="primary" floating>Enter File Name</ion-label>
-                <ion-input [(ngModel)]="name"></ion-input>
+                <ion-input [(ngModel)]="name" ></ion-input>
             </ion-item>
             <button ion-button icon-start small (click)="FTPDownloadClick()">
                 <ion-icon name="ios-cloud-download-outline"></ion-icon>
@@ -55,7 +57,9 @@
             <!-- style="width: 70%;min-width: 50px;" -->
             <ion-item style="display: flex;padding-left: 0px">
                 <ion-label style="max-width: 30%;">Device</ion-label>
-                <ion-select style="min-width: 70%;" [(ngModel)]="device" okText="Okay" cancelText="Dismiss" [compareWith]="compareFn">
+                <ion-select style="min-width: 70%;" [(ngModel)]="device" 
+                    okText="Okay" cancelText="Dismiss"  
+                    [compareWith]="compareFn">
                     <ion-option *ngFor="let o of deviceList" [value]="o">{{o.text}}</ion-option>
                 </ion-select>
             </ion-item>
@@ -108,24 +112,17 @@
     </ion-stepper>
 </ion-content>
 <!-- color="secondary" -->
+
+
+<!-- Original Footer is in .ts file -->
 <ion-footer>
     <ion-toolbar>
         <ion-title>
-            {{ticks}}
-            <ion-icon name="ios-phone-portrait"></ion-icon>
-
-            <ion-spinner  name="dots" paused="{{!isInstallStarted}}"></ion-spinner>
-            <ion-spinner  name="dots" paused="{{!isInstallStarted}}"></ion-spinner>
-            <!-- <ion-icon *ngIf="!isProcessStarted" name="ios-more-outline"></ion-icon>
-            <ion-icon *ngIf="!isProcessStarted" name="ios-more-outline"></ion-icon> -->
-
-            <!-- *ngIf="isProcessStarted" -->
-            <ion-icon  name="ios-cube-outline"></ion-icon>
-            {{devicename}}
-
-            <!-- <div >
-                <ion-spinner name="dots"></ion-spinner>
-            </div> -->
+            <div class="load" style="height: 10px">
+                <div class="dot"></div>
+             </div>            
         </ion-title>
     </ion-toolbar>
 </ion-footer>
+
+

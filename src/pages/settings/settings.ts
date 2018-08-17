@@ -40,7 +40,8 @@ export class SettingsPage {
       //this.deviceIP=
       // this.connexServ.ConnexAppConfig().
      this.deviceIP =this.connexServ.ConnexAppConfig.UPLOAD_IP 
-     this.DeviceAPI_URL=this.connexServ.ConnexAppConfig.UPLOAD_API_URL
+    //  this.DeviceAPI_URL=this.connexServ.ConnexAppConfig.UPLOAD_API_URL
+     this.DeviceAPI_URL=this.connexServ.ConnexAppConfig.API_URL
 
      this.FTPHost=this.connexServ.ConnexAppConfig.FTP_HOST 
      this.FTPUserName =this.connexServ.ConnexAppConfig.FTP_Uid
@@ -53,7 +54,7 @@ export class SettingsPage {
   }
   SaveSettings(){
     this.connexServ.ConnexAppConfig.UPLOAD_IP = this.deviceIP
-    this.connexServ.ConnexAppConfig.UPLOAD_API_URL = this.DeviceAPI_URL
+    this.connexServ.ConnexAppConfig.API_URL = this.DeviceAPI_URL
 
     this.connexServ.ConnexAppConfig.FTP_HOST = this.FTPHost
     this.connexServ.ConnexAppConfig.FTP_Uid = this.FTPUserName

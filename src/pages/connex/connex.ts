@@ -159,7 +159,7 @@ export class ConnexPage {
       //alert(data)
     },
     err => { 
-      alert(err)
+      //alert(err)
      }
     )
 
@@ -505,9 +505,13 @@ export class ConnexPage {
 
     
     if (this.name.length>0) {
-      // this.fileTransfer.upload(this.file.dataDirectory + this.name +'.zip',      
-      this.fileTransfer.upload(this.file.dataDirectory + this.localfilename.text,      
-      'http://192.168.137.1/iconnectwebapi/uploadscriptfile'
+      // this.fileTransfer.upload(this.file.dataDirectory + this.name +'.zip',    
+      // 'http://192.168.137.1/iconnectwebapi/uploadscriptfile'
+      
+      this.apiurl = this.connexsrv.ConnexAppConfig.API_URL;
+      alert(this.apiurl)
+      this.fileTransfer.upload(this.file.dataDirectory + this.localfilename.text,   
+      this.apiurl+"/uploadscriptfile"         
       , options)
       .then((data) => {
         //this.showAlert(data + "Sucess")
@@ -517,6 +521,7 @@ export class ConnexPage {
         this.stepper.nextStep()
         this.presentProcessDots()
 
+        //alert(data);
         //FLIPPING PROGRESS STATUS
         this.isProcessStarted = false
         this.Step4Icon = "number"
@@ -550,11 +555,25 @@ export class ConnexPage {
   {
     this.stepper.nextStep()
     this.presentProcessDots()
+
+    // if Log is Success then Done All
+    // Else Alert
+
     this.Step4Icon = "done-all"
     this.step4Description = " Installed Successfully.."
     
-   
-    //this.showAlert("Installation complete")
+    
+    
+    this.http.get(this.connexsrv.ConnexAppConfig.API_URL+"/StartInstall?fileName="+this.localfilename.text)
+    .subscribe( (data : boolean) => {
+      this.isInstallStarted = data
+      //alert(data)
+    },
+    err => { 
+      //alert(err)
+     }
+    )
+    //this.showAlert(this.connexsrv.ConnexAppConfig.API_URL+"/StartInstall?fileName="+this.localfilename.text)
     
 
   }
@@ -566,3 +585,30 @@ export class ConnexPage {
 
 
 }
+
+
+
+// <!--  
+// <ion-footer>
+//     <ion-toolbar>
+//         <ion-title>
+//             {{ticks}}
+//             <ion-icon name="ios-phone-portrait"></ion-icon>
+
+//             <ion-spinner  name="dots" paused="{{!isInstallStarted}}"></ion-spinner>
+//             <ion-spinner  name="dots" paused="{{!isInstallStarted}}"></ion-spinner>
+//             <!-- <ion-icon *ngIf="!isProcessStarted" name="ios-more-outline"></ion-icon>
+//             <ion-icon *ngIf="!isProcessStarted" name="ios-more-outline"></ion-icon> -->
+
+//             <!-- *ngIf="isProcessStarted" -->
+//             <ion-icon  name="ios-cube-outline"></ion-icon>
+//             {{devicename}}
+
+//             <!-- <div >
+//                 <ion-spinner name="dots"></ion-spinner>
+//             </div> -->
+//         </ion-title>
+//     </ion-toolbar>
+// </ion-footer>
+
+// -->
